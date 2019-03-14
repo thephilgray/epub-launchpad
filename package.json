@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "dependencies": {
     "electron": "^4.1.0",
+    "launch-epub": "git+https://github.com/thephilgray/launch-epub.git",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8"

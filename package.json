@@ -2,6 +2,7 @@
   "name": "epub-launchpad",
   "version": "0.1.0",
   "private": true,
+  "main": "src/main.js",
   "dependencies": {
     "electron": "^4.1.0",
     "react": "^16.8.4",
@@ -9,6 +10,7 @@
     "react-scripts": "2.1.8"
   },
   "scripts": {
+    "electron": "electron .",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

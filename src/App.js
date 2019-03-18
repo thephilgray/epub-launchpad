@@ -1,62 +1,58 @@
-import React, { Component } from "react";
-import LaunchEpub from "launch-epub";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      projectDir: ""
-    };
-  }
+import logo from './logo.svg';
+import './App.css';
 
-  launchServer = () => {};
+const electron = window.require('electron');
+const ipcRenderer = electron.ipcRenderer;
 
-  handleDrop = e => {
-    this.setState({ projectDir: e.dataTransfer.files[0].path });
-    console.log(this.state.projectDir);
-    const port = 4000;
-    const browserSyncOptions = { open: false, port };
-    const epubServer = new LaunchEpub(
-      this.state.projectDir,
-      browserSyncOptions
-    );
-    epubServer.start();
+function App() {
+  const [dragging, setDragging] = useState(false);
+  const [projectDir, setProjectDir] = useState(null);
 
-    window.open(
-      `http://localhost:${port}/`,
-      "_blank",
-      "nodeIntegration=no,width=600,height=800"
-    );
-
+  const handleDrop = e => {
+    setProjectDir(e.dataTransfer.files[0].path);
+    setDragging(false);
     e.preventDefault();
   };
 
-  render() {
-    return (
-      <div className="App">
-        <header
-          className="App-header"
-          onDrop={this.handleDrop}
-          onDragOver={e => e.preventDefault()}
-        >
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+  const handleDragOver = e => {
+    setDragging(true);
+    e.preventDefault();
+  };
+
+  const handleDragEnd = e => {
+    setDragging(false);
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    if (projectDir) {
+      ipcRenderer.send('launch-project-request', projectDir);
+      ipcRenderer.on('launch-project-response', (event, arg) => {
+        console.log(arg);
+      });
+    }
+  }, [projectDir]);
+
+  return (
+    <div className="App">
+      <header
+        className={`App-header ${dragging ? 'dragging' : ''}`}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        onDragLeave={handleDragEnd}
+      >
+        <img src={logo} className="App-logo" alt="logo" />
+        {!dragging && (
+          <p>Drag a project directory into the window to launch.</p>
+        )}
+        {dragging && <p>Drop!</p>}
+        {projectDir && <p>currently viewing {projectDir}</p>}
+      </header>
+    </div>
+  );
 }
 
 export default App;

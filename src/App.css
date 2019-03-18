@@ -17,10 +17,17 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+.App-header.dragging {
+  background-color: #decafb;
+  color: #111;
 }
 
 .App-link {
-  color: #61dafb;
+  color: #decafb;
 }
 
 @keyframes App-logo-spin {

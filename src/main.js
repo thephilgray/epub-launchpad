@@ -9,11 +9,8 @@ let mainWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 400,
-    height: 400,
-    webPreferences: {
-      nodeIntegration: true
-    }
+    width: 600,
+    height: 600
   });
 
   // and load the index.html of the app.
@@ -58,6 +55,8 @@ ipcMain.on('launch-project-request', (event, arg) => {
   const epubServer = new LaunchEpub(arg);
   epubServer.start();
   event.sender.send('launch-project-response', arg);
+  const external = epubServer.BrowserSyncInstance._options;
+  console.log(external);
 });
 
 // In this file you can include the rest of your app's specific main process

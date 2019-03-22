@@ -8,6 +8,16 @@
   pointer-events: none;
 }
 
+.App-header.dragging .App-logo {
+  animation: App-bounce infinite 0.5s linear;
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+}
+
+.App-header.dropped .App-logo {
+  animation: App-bounce-out-up 1s forwards;
+  animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -22,7 +32,7 @@
 }
 
 .App-header.dragging {
-  background-color: #decafb;
+  background-color: #5200cd;
   color: #111;
 }
 
@@ -36,5 +46,46 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes App-bounce {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1.1, 0.9) translateY(0);
+  }
+  30% {
+    transform: scale(0.9, 1.1) translateY(-10px);
+  }
+  50% {
+    transform: scale(1.05, 0.95) translateY(0);
+  }
+  57% {
+    transform: scale(1, 1) translateY(-7px);
+  }
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+
+@keyframes App-bounce-out-up {
+  20% {
+    transform: translate3d(0, -10px, 0);
+  }
+
+  40%,
+  45% {
+    opacity: 1;
+    transform: translate3d(0, 20px, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -2000px, 0);
   }
 }
